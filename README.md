@@ -6,6 +6,7 @@ This repo contains implementations of following algorithms:
 
 Consider each separately:
 ## RB Tree
+### RBNode
 ```java
 public class RBNode extends Node 
 ```
@@ -21,8 +22,10 @@ constructor
 returns a tree converted to a string below this node: 
 
 ![](https://github.com/ilkoch008/Graphs/blob/master/images/Screenshot_3.png?raw=true)
+
+### RBTree
 ```java
-*public class RBTree*
+public class RBTree
 ```
 #### public methods:
 ```java
