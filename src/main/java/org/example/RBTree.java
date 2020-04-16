@@ -39,15 +39,6 @@ public class RBTree {
         return deleteElement(search(key));
     }
 
-    public void collectAll(List<RBNode> nodes, RBNode node) {
-        nodes.add(node);
-        if (!node.getLeftChild().nil()) {
-            collectAll(nodes, node.getLeftChild());
-        }
-        if (!node.getRightChild().nil()) {
-            collectAll(nodes, node.getRightChild());
-        }
-    }
 
     private boolean deleteElement(RBNode node) {
         RBNode child = null;

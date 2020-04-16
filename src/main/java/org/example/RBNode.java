@@ -16,15 +16,8 @@ public class RBNode extends Node {
         super();
     }
 
-    public void isNIL(){
-        nil = true;
-    }
 
-    public void isNotNIL(){
-        nil = false;
-    }
-
-    public Boolean nil(){
+    Boolean nil() {
         return nil;
     }
 
@@ -33,7 +26,7 @@ public class RBNode extends Node {
         super(key, data);
     }
 
-    public RBNode(Integer key, Object data, RBNode leftChild, RBNode rightChild, RBNode parent, boolean color, Boolean nil){
+    public RBNode(Integer key, Object data, RBNode leftChild, RBNode rightChild, RBNode parent, boolean color, Boolean nil) {
         super(key, data);
         this.parent = parent;
         this.leftChild = leftChild;
@@ -42,56 +35,56 @@ public class RBNode extends Node {
         this.nil = nil;
     }
 
-    public Boolean getColor() {
+    Boolean getColor() {
         return color;
     }
 
-    public void makeRed(){
+    void makeRed() {
         color = RED;
     }
 
-    public void makeBlack(){
+    void makeBlack() {
         color = BLACK;
     }
 
-    public void setColor(boolean color){
+    void setColor(boolean color) {
         this.color = color;
     }
 
-    public RBNode getParent() {
+    RBNode getParent() {
         return parent;
     }
 
-    public void setParent(RBNode parent) {
+    void setParent(RBNode parent) {
         this.parent = parent;
     }
 
-    public RBNode getLeftChild() {
+    RBNode getLeftChild() {
         return leftChild;
     }
 
-    public void setLeftChild(RBNode leftChild) {
+    void setLeftChild(RBNode leftChild) {
         this.leftChild = leftChild;
     }
 
-    public RBNode getRightChild() {
+    RBNode getRightChild() {
         return rightChild;
     }
 
-    public void setRightChild(RBNode rightChild) {
+    void setRightChild(RBNode rightChild) {
         this.rightChild = rightChild;
     }
 
-    public void setChild(RBNode child){
-        if(child.getKey() < this.getKey()){
+    void setChild(RBNode child) {
+        if (child.getKey() < this.getKey()) {
             this.setLeftChild(child);
-        } else  if(child.getKey() > this.getKey()){
+        } else if (child.getKey() > this.getKey()) {
             this.setRightChild(child);
         }
     }
 
-    public RBNode getAnotherChild(RBNode child){
-        if(child.equals(this.getLeftChild())){
+    RBNode getAnotherChild(RBNode child) {
+        if (child.equals(this.getLeftChild())) {
             return this.getRightChild();
         } else {
             return this.getLeftChild();
@@ -102,7 +95,7 @@ public class RBNode extends Node {
 
         private RBNode newRBNode;
 
-        public Builder(){
+        public Builder() {
             newRBNode = new RBNode();
         }
 
@@ -113,40 +106,40 @@ public class RBNode extends Node {
 
         public Builder setParent(RBNode parent) {
             newRBNode.parent = parent;
-            return  this;
+            return this;
         }
 
         public Builder setLeftChild(RBNode leftChild) {
             newRBNode.leftChild = leftChild;
-            return  this;
+            return this;
         }
 
         public Builder setRightChild(RBNode rightChild) {
             newRBNode.rightChild = rightChild;
-            return  this;
+            return this;
         }
 
         public Builder setKey(Integer key) {
             newRBNode.setKey(key);
-            return  this;
+            return this;
         }
 
         public Builder setData(Object data) {
             newRBNode.setData(data);
-            return  this;
+            return this;
         }
 
-        public RBNode build(){
+        public RBNode build() {
             return newRBNode;
         }
     }
-    
-    public void createNILs(){
+
+    void createNILs() {
         this.setLeftChild(RBNode.buildNIL(this));
         this.setRightChild(RBNode.buildNIL(this));
     }
 
-    public static RBNode buildNIL(RBNode parent){
+    static RBNode buildNIL(RBNode parent) {
         return new RBNode(null, null, null, null, parent, BLACK, true);
     }
 
@@ -158,10 +151,10 @@ public class RBNode extends Node {
 
     private void print(StringBuilder buffer, String prefix, String childrenPrefix) {
         buffer.append(prefix);
-        if(this.getColor() == RED) {
+        if (this.getColor() == RED) {
             buffer.append(ANSI_RED).append(this.getKey().toString()).append(ANSI_RESET);
         } else {
-            if(this.getKey() != null) {
+            if (this.getKey() != null) {
                 buffer.append(this.getKey().toString());
             } else {
                 buffer.append("nil");
@@ -170,15 +163,15 @@ public class RBNode extends Node {
         buffer.append('\n');
 
 
-            if (!(this.getRightChild() == null) && !(this.getLeftChild() == null)) {
-                this.getRightChild().print(buffer, childrenPrefix + "├── " + "right ", childrenPrefix + "│   ");
-            }
-            if (!(this.getRightChild() == null) && this.getLeftChild() == null) {
-                this.getRightChild().print(buffer, childrenPrefix + "└── " + "right ", childrenPrefix + "    ");
-            }
-            if(!(this.getLeftChild() == null)){
-                this.getLeftChild().print(buffer, childrenPrefix + "└── " + "left ", childrenPrefix + "    ");
-            }
+        if (!(this.getRightChild() == null) && !(this.getLeftChild() == null)) {
+            this.getRightChild().print(buffer, childrenPrefix + "├── " + "right ", childrenPrefix + "│   ");
+        }
+        if (!(this.getRightChild() == null) && this.getLeftChild() == null) {
+            this.getRightChild().print(buffer, childrenPrefix + "└── " + "right ", childrenPrefix + "    ");
+        }
+        if (!(this.getLeftChild() == null)) {
+            this.getLeftChild().print(buffer, childrenPrefix + "└── " + "left ", childrenPrefix + "    ");
+        }
 
     }
 

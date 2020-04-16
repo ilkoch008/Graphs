@@ -1,5 +1,8 @@
 package org.example;
 
+import java.util.Random;
+import java.util.Scanner;
+
 /**
  * Hello world!
  *
@@ -9,28 +12,28 @@ public class App
     public static void main( String[] args )
     {
 
-        Graph graph = new Graph();
-        graph.init();
-
-        graph.readFrom("C:\\ProgsProjects\\Graphs_task\\src\\KraskalAlgorithmTest2.txt");
-
-        System.out.println("=========================");
-
-        graph.findMinWays(graph.getNode(1));
-        graph.printWays();
-
-//        Random random = new Random();
-//        Scanner sc = new Scanner(System.in);
-//        String act = "";
-//        Integer key;
-//        RBTree tree = new RBTree();
+//        Graph graph = new Graph();
+//        graph.init();
 //
-//        for (int i = 0; i < 15; i++) {
-//            tree.addElement(new RBNode.Builder().setKey(random.nextInt(100)).build());
-//        }
+//        graph.readFrom("C:\\ProgsProjects\\Graphs_task\\src\\KraskalAlgorithmTest2.txt");
 //
-//        tree.print();
+//        System.out.println("=========================");
 //
+//        graph.findMinWays(graph.getNode(1));
+//        graph.printWays();
+
+        Random random = new Random();
+        Scanner sc = new Scanner(System.in);
+        String act = "";
+        Integer key;
+        RBTree tree = new RBTree();
+
+        for (int i = 0; i < 9; i++) {
+            tree.addElement(new RBNode.Builder().setKey(random.nextInt(100)).build());
+        }
+
+        tree.print();
+
 //        System.out.println("test is OK: " + tree.testIsOK());
 //
 //        while (true) {
