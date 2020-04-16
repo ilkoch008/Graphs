@@ -3,11 +3,14 @@ package org.example;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class Graph {
     private ArrayList<Node> nodes = null;
     private ArrayList<Edge> edges = null;
+    private Node lastRoot = null;
 
     public void init(){
         nodes = new ArrayList<>();
@@ -28,6 +31,15 @@ public class Graph {
 
     public void setEdges(ArrayList<Edge> edges) {
         this.edges = edges;
+    }
+
+    public Node getNode(Integer key){
+        for(Node node: nodes){
+            if(node.getKey().equals(key)){
+                return node;
+            }
+        }
+        return null;
     }
 
     public boolean isInitialized(){
@@ -83,14 +95,10 @@ public class Graph {
     }
     
     public ArrayList<Edge> getEdgesFromNode(Node node){
-        ArrayList<Edge> retEdges = null;
+        ArrayList<Edge> retEdges = new ArrayList<>();
         int i = 0;
         for(Edge edge: edges){
             if(edge.getStartNode().equals(node)){
-                if(i == 0){
-                    i++;
-                    retEdges = new ArrayList<>();
-                }
                 retEdges.add(edge);
             }
         }
@@ -103,18 +111,13 @@ public class Graph {
                 return getEdgesFromNode(node);
             }
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public ArrayList<Edge> getEdgesToNode(Node node){
-        ArrayList<Edge> retEdges = null;
-        int i = 0;
+        ArrayList<Edge> retEdges = new ArrayList<>();
         for(Edge edge: edges){
             if(edge.getEndNode().equals(node)){
-                if(i == 0){
-                    i++;
-                    retEdges = new ArrayList<>();
-                }
                 retEdges.add(edge);
             }
         }
@@ -127,7 +130,7 @@ public class Graph {
                 return getEdgesToNode(node);
             }
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public ArrayList<Edge> getEdges(Integer key){
@@ -144,9 +147,6 @@ public class Graph {
             edges.add(edge.getCopy());
         }
         edges.sort(Edge::compareTo);
-//        for (int i = 0; i < edges.size(); i++) {
-//            System.out.println(edges.get(i).getMass().toString());
-//        }
         ArrayList<Graph> interGraphs = new ArrayList<>();
         interGraphs.add(new Graph());
         interGraphs.get(0).init();
@@ -237,7 +237,7 @@ public class Graph {
             sc = new Scanner(file);
             int numOfNodes = sc.nextInt();
             for (int i = 0; i < numOfNodes; i++) {
-                this.getNodes().add(new Node.Builder().setKey(i).build());
+                this.getNodes().add(new Node.Builder().setKey(i + 1).build());
             }
             while (sc.hasNext()){
                 int node1 = sc.nextInt() - 1;
@@ -254,7 +254,7 @@ public class Graph {
         }
     }
 
-    public Graph readAnswerFrom(String str){
+    public Graph readAnswerForKraskalFrom(String str){
         File file = new File(str);
         Graph ret = new Graph();
         ret.init();
@@ -262,9 +262,26 @@ public class Graph {
         try {
             sc = new Scanner(file);
             while (sc.hasNext()){
-                int node1 = sc.nextInt() - 1;
-                int node2 = sc.nextInt() - 1;
+                int node1 = sc.nextInt();
+                int node2 = sc.nextInt();
                 ret.addEdge(this.getEdge(node1, node2));
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    public ArrayList<Node> readAnswerForDijkstraFrom(String str){
+        File file = new File(str);
+        ArrayList<Node> ret = new ArrayList<>();
+        Scanner sc = null;
+        try {
+            sc = new Scanner(file);
+            while (sc.hasNext()){
+                int key = sc.nextInt();
+                int wayWeight = sc.nextInt();
+                ret.add(new Node.Builder().setKey(key).setWayWeight(wayWeight).build());
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -286,5 +303,90 @@ public class Graph {
             }
         }
         return null;
+    }
+
+    Queue<Node> nextNode = new LinkedList<>();
+
+    public void findMinWays(Node rootNode){ // Dijkstra’s algorithm
+        for (int i = 0; i < nodes.size(); i++) {
+            nodes.get(i).way = new int[this.getNodes().size() + 10];
+        }
+        rootNode.wayWeight = 0;
+        lastRoot = rootNode;
+        nextNode.add(rootNode);
+        ArrayList<Node> visited = new ArrayList<Node>();
+        while (!nextNode.isEmpty()) {
+            findMinWayHelper(nextNode.remove(), visited);
+        }
+    }
+
+    private void findMinWayHelper(Node node, ArrayList<Node> visited){
+        ArrayList<Node> neighbours = getNeighbours(node);
+        neighbours.removeAll(visited);
+        visited.add(node);
+        if(lastRoot.equals(node)){
+            node.way[0] = node.getKey();
+            node.wayLength = 1;
+        }
+
+        for (int i = 0; i < neighbours.size(); i++) {
+            int massToAdd = getEdge(node.getKey(), neighbours.get(i).getKey()).getMass();
+            if((node.wayWeight + massToAdd) < neighbours.get(i).wayWeight){
+                neighbours.get(i).wayWeight = node.wayWeight + massToAdd;
+                neighbours.get(i).wayLength = node.wayLength + 1;
+                for (int j = 0; j < node.wayLength; j++) {
+                    neighbours.get(i).way[j] = node.way[j];
+                }
+                neighbours.get(i).way[node.wayLength] = neighbours.get(i).getKey();
+            }
+        }
+
+        ArrayList<NodeAndWeight> nodeAndWeights = new ArrayList<>();
+        for (int i = 0; i < neighbours.size(); i++){
+            NodeAndWeight nodeAndWeight = new NodeAndWeight();
+            nodeAndWeight.setNode(neighbours.get(i));
+            nodeAndWeight.setWeight(getEdge(node.getKey(), neighbours.get(i).getKey()).getMass());
+            nodeAndWeights.add(nodeAndWeight);
+        }
+
+        nodeAndWeights.sort(NodeAndWeight::compareTo);
+
+        for (int i = 0; i < neighbours.size(); i++) {
+            nextNode.add(nodeAndWeights.get(i).getNode());
+        }
+
+    }
+
+    public ArrayList<Node> getNeighbours(Node node){
+        ArrayList<Node> ret = new ArrayList<>();
+        ArrayList<Edge> neighEdges;
+        neighEdges = getEdges(node.getKey());
+        for (Edge edge: neighEdges){
+            if(!edge.getStartNode().equals(node)){
+                ret.add(edge.getStartNode());
+            } else if(!edge.getEndNode().equals(node)) {
+                ret.add(edge.getEndNode());
+            }
+        }
+        return ret;
+    }
+
+    public void printWays(){
+        if(lastRoot == null){
+            System.out.println("FindMinWays was not executed before printing");
+            return;
+        }
+        for (Node node: this.getNodes()){
+            StringBuilder sb = new StringBuilder();
+            sb.append("Node ").append(node.getKey().toString()).append("; way weight: ");
+            sb.append(node.wayWeight).append("; way: ");
+            for (int i = 0; i < node.wayLength; i++) {
+                if(i != 0){
+                    sb.append("->");
+                }
+                sb.append(node.way[i]);
+            }
+            System.out.println(sb.toString());
+        }
     }
 }

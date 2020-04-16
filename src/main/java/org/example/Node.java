@@ -1,10 +1,16 @@
 package org.example;
 
+import java.util.ArrayList;
+
 import static org.example.Colors.*;
 
 public class Node {
     private Integer key;
     private Object data;
+    public int wayWeight = Integer.MAX_VALUE;
+
+    public int[] way;
+    public int wayLength;
 
     public void setData(Object data) {
         this.data = data;
@@ -43,6 +49,11 @@ public class Node {
 
         public Builder setData(Object data) {
             newNode.data = data;
+            return this;
+        }
+
+        public Builder setWayWeight(int weight) {
+            newNode.wayWeight = weight;
             return this;
         }
 

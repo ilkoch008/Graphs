@@ -1,8 +1,4 @@
 package org.example;
-import org.w3c.dom.ls.LSInput;
-
-import java.util.Random;
-import java.util.Scanner;
 
 /**
  * Hello world!
@@ -16,18 +12,12 @@ public class App
         Graph graph = new Graph();
         graph.init();
 
-        graph.readFrom("C:\\ProgsProjects\\Graphs_task\\src\\KraskalAlgorithmTest1.txt");
-        graph.printEdgesUndirected();
+        graph.readFrom("C:\\ProgsProjects\\Graphs_task\\src\\KraskalAlgorithmTest2.txt");
 
+        System.out.println("=========================");
 
-        Graph minTreeWiki = graph.readAnswerFrom("C:\\ProgsProjects\\Graphs_task\\src\\KraskalAlgorithmTest1_Answer.txt");
-
-        System.out.println("minTree: ");
-        Graph minTree = graph.getMinSpanningTree();
-        minTree.printEdgesUndirected();
-
-        System.out.println("minTreeWiki: ");
-        minTreeWiki.printEdgesUndirected();
+        graph.findMinWays(graph.getNode(1));
+        graph.printWays();
 
 //        Random random = new Random();
 //        Scanner sc = new Scanner(System.in);
