@@ -7,14 +7,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Unit test for simple App.
- */
+
 public class AppTest 
 {
-    /**
-     * Rigorous Test :-)
-     */
+
     @Test
     public void TreeTest()
     {
@@ -36,5 +32,32 @@ public class AppTest
             tree.deleteElement(key);
             assertTrue(tree.testIsOK());
         }
+
+    }
+
+    @Test
+    public void KraskalAlgorithmTest1(){
+        Graph graph = new Graph();
+        graph.init();
+        graph.readFrom("C:\\ProgsProjects\\Graphs_task\\src\\KraskalAlgorithmTest1.txt");
+
+        Graph minTreeWiki = graph.readAnswerFrom("C:\\ProgsProjects\\Graphs_task\\src\\KraskalAlgorithmTest1_Answer.txt");
+
+        Graph minTree = graph.getMinSpanningTree();
+
+        assertTrue(minTree.equalsUndirected(minTreeWiki));
+    }
+
+    @Test
+    public void KraskalAlgorithmTest2() {
+        Graph graph = new Graph();
+        graph.init();
+        graph.readFrom("C:\\ProgsProjects\\Graphs_task\\src\\KraskalAlgorithmTest2.txt");
+
+        Graph minTreeWiki = graph.readAnswerFrom("C:\\ProgsProjects\\Graphs_task\\src\\KraskalAlgorithmTest2_Answer.txt");
+
+        Graph minTree = graph.getMinSpanningTree();
+
+        assertTrue(minTree.equalsUndirected(minTreeWiki));
     }
 }

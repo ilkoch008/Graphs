@@ -1,6 +1,6 @@
 package org.example;
 
-public class Edge {
+public class Edge implements Comparable<Edge>{
     private Node startNode;
     private Node endNode;
     private Integer mass;
@@ -26,25 +26,51 @@ public class Edge {
         this.startNode = startNode;
     }
 
-    public class Builder {
-        private Builder() {}
+    @Override
+    public int compareTo(Edge anotherEdge) {
+        if (this.mass.equals(anotherEdge.getMass())) {
+            return 0;
+        } else if (this.mass < anotherEdge.getMass()) {
+            return -1;
+        } else {
+            return 1;
+        }
+    }
+
+    public static class Builder {
+
+        private Edge newEdge;
+
+        public Builder(){
+            newEdge = new Edge();
+        }
+
+
         public Builder setMass(Integer mass) {
-            Edge.this.mass = mass;
+            newEdge.mass = mass;
             return this;
         }
 
         public Builder setStartNode(Node startNode) {
-            Edge.this.startNode = startNode;
+            newEdge.startNode = startNode;
             return this;
         }
 
         public Builder setEndNode(Node endNode) {
-            Edge.this.endNode = endNode;
+            newEdge.endNode = endNode;
             return this;
         }
 
         public Edge build() {
-            return Edge.this;
+            return newEdge;
         }
+    }
+
+    public Edge getCopy(){
+        return new Builder()
+                .setMass(this.getMass())
+                .setStartNode(this.getStartNode())
+                .setEndNode(this.getEndNode())
+                .build();
     }
 }

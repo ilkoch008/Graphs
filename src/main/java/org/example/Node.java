@@ -29,21 +29,25 @@ public class Node {
     }
 
     public static class Builder {
-        private Integer key;
-        private Object data;
+
+        private Node newNode;
+
+        public Builder(){
+            newNode = new Node();
+        }
 
         public Builder setKey(Integer key) {
-            this.key = key;
+            newNode.key = key;
             return this;
         }
 
         public Builder setData(Object data) {
-            this.data = data;
+            newNode.data = data;
             return this;
         }
 
         public Node build(){
-            return new Node(key, data);
+            return newNode;
         }
     }
 }
