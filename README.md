@@ -171,7 +171,7 @@ returns minimal spanning tree using **Kruskal's algorithm**
 9. public boolean equalsUndirected(Graph graph);
 ```
 
-compares undirected graph with given. Returns true if keys in their nodes and edges connecting nodes are equal
+compares an undirected graph with a given one. Returns true if the keys at their nodes and the edges connecting the nodes are equal
 
 ```java
 10. public void printEdgesUndirected();
