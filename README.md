@@ -65,7 +65,7 @@ checks the tree for violations of red-black tree rules:
 
   * every node is red or black, the root node is black,
   * no two red nodes appear consecutively,
-  * the path from the root node to all four null leaf nodes passes through two black nodes (either 2 and then 1 , or 2 and then 3 ) on the way to the null leaves.
+  * the path from the root node to all four null leaf nodes passes through two black nodes (either 2 and then 1 , or 2 and then 3) on the way to the null leaves.
 ```java  
 9. public Integer getBlackDepth(RBNode node)
 ```
@@ -98,7 +98,7 @@ public class Node {
     public Integer getKey()
 }
 ```
-### Graph by himself
+### Graph
 ```java
 public class Graph
 ```
