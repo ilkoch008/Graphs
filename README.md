@@ -189,7 +189,7 @@ finds shortest ways using **Dijkstra’s algorithm**. Results are put in nodes
 12. public ArrayList<Node> getNeighbours(Node node);
 ```
 
-returns neighbours ov given node
+returns neighbours of given node
 
 ```java
 13. public void printWays();
@@ -209,10 +209,14 @@ key21 key22 massOfEdge2
  ...   ...     ...
 ```
 
+where keys of nodes are equal to their index number.
+
 ```java
     2. public ArrayList<Node> readAnswerForDijkstraFrom(String str);
 ```
+
 builds nodes using following format:
+
 ```
 key1 weightOfWay1
 key2 weightOfWay2
